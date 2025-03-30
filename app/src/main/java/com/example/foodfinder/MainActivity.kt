@@ -1,5 +1,6 @@
 package com.example.foodfinder
 
+import androidx.compose.foundation.lazy.LazyColumn
 import android.Manifest
 import android.content.Context
 import android.content.Intent
@@ -15,22 +16,30 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Place
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.foodfinder.ui.component.PermissionDialog
+import com.example.foodfinder.ui.component.RestaurantItem
 import com.example.foodfinder.ui.component.SearchBar
 import com.example.foodfinder.ui.theme.FoodFinderTheme
+import com.example.foodfinder.ui.viewmodel.RestaurantViewModel
 
 
 class MainActivity : ComponentActivity() {
@@ -72,12 +81,9 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun SearchBar(innerPadding: PaddingValues) {
+fun SearchBar(innerPadding: PaddingValues, viewModel: RestaurantViewModel = viewModel()) {
     var searchText by rememberSaveable { mutableStateOf("") }
     val context = LocalContext.current
-    var isPermissionGranted by rememberSaveable { mutableStateOf(false) }
-    var showLocationErrorDialog by rememberSaveable { mutableStateOf(false) }
-    var userTriggeredSearch by rememberSaveable { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -88,18 +94,8 @@ fun SearchBar(innerPadding: PaddingValues) {
             searchText = searchText,
             onSearchTextChanged = { searchText = it },
             onLocationClick = {
-                searchText = ""
-                checkLocationPermission(
-                    context = context,
-                    isPermissionGranted = isPermissionGranted,
-                    onGranted = {
-                        isPermissionGranted = true
-                        println("GEO")
-                    },
-                    onDenied = {
-                        showLocationErrorDialog = true
-                    }
-                )
+                viewModel.checkLocationPermission(context)
+                viewModel.fetchRestaurants(0.0, 0.0)
             },
             onSearchClick = {
                 println(searchText)
@@ -111,21 +107,35 @@ fun SearchBar(innerPadding: PaddingValues) {
                 }
             )
         )
-    }
 
-    LocationPermissionDialog(
-        showDialog = showLocationErrorDialog,
-        onDismiss = { showLocationErrorDialog = false },
-        onConfirm = {
-            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-            intent.data = Uri.fromParts("package", context.packageName, null)
-            context.startActivity(intent)
-            showLocationErrorDialog = false
+        if (viewModel.isLoading.value) {
+            CircularProgressIndicator(modifier = Modifier.padding(16.dp))
+        } else if (viewModel.errorMessage.value != null) {
+            Text(text = "Error: ${viewModel.errorMessage.value}",
+                color = Color.Red,
+                modifier = Modifier.padding(16.dp))
+        } else {
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                items(viewModel.restaurants.value) { restaurant ->
+                    RestaurantItem(restaurant)
+                }
+            }
         }
-    )
+
+
+        if (viewModel.showLocationErrorDialog.value) {
+            LocationPermissionDialog(
+                showDialog = viewModel.showLocationErrorDialog.value,
+                onDismiss = { viewModel.showLocationErrorDialog.value = false },
+                onConfirm = {
+                }
+            )
+        }
+    }
 }
 
-private fun checkLocationPermission(
+
+/*private fun checkLocationPermission(
     context: Context,
     isPermissionGranted: Boolean,
     onGranted: () -> Unit,
@@ -152,7 +162,7 @@ private fun checkLocationPermission(
             onDenied()
         }
     }
-}
+}*/
 
 @Composable
 fun LocationPermissionDialog(
