@@ -10,7 +10,8 @@ object RestaurantService {
 
     suspend fun getRestaurantsByLocation(latitude: Double, longitude: Double) :  List<Restaurant>{
         val service = RestaurantApiService()
-        val restaurants: RestaurantListDto = service.getRestaurants() ?: return emptyList()
+        val restaurants: RestaurantListDto = service.getRestaurants(latitude, longitude)
+            ?: return emptyList()
         return transformDTOList(restaurants)
     }
 

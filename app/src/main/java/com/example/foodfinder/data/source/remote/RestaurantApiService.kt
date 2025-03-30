@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class RestaurantApiService {
 
-    suspend fun getRestaurants(): RestaurantListDto? {
+    suspend fun getRestaurants(latitude: Double, longitude: Double): RestaurantListDto? {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://overpass-api.de/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -18,9 +18,12 @@ class RestaurantApiService {
         val service = retrofit.create(OverpassApiService::class.java)
         val query = """
             [out:json];
-            node["amenity"="fast_food"](49.4,1.0,49.5,1.1);
-            out;
+            node["amenity"="restaurant"](around:500,$latitude,$longitude);
+            out body;
+            >;
+            out skel qt;
         """.trimIndent()
+        println(query)
         var result: RestaurantListDto? = null
         try {
             val response = withContext(Dispatchers.IO) {
