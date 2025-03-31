@@ -2,33 +2,62 @@ package com.example.foodfinder.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.font.FontWeight
+import com.example.foodfinder.R
 
-// Set of Material typography styles to start with
+val robotoFontFamily = FontFamily(
+    Font(R.font.roboto_regular),
+    Font(R.font.roboto_bold, FontWeight.Bold),
+    Font(R.font.roboto_medium, FontWeight.Medium)
+)
+
 val Typography = Typography(
+    displayLarge = TextStyle(
+        fontFamily = robotoFontFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 30.sp
+    ),
+    displayMedium = TextStyle(
+        fontFamily = robotoFontFamily,
+        fontWeight = FontWeight.Medium,
+        fontSize = 24.sp
+    ),
+    displaySmall = TextStyle(
+        fontFamily = robotoFontFamily,
+        fontWeight = FontWeight.Light,
+        fontSize = 20.sp
+    ),
     bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = robotoFontFamily,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
-    )
-    /* Other default text styles to override
-    titleLarge = TextStyle(
-        fontFamily = FontFamily.Default,
+        fontSize = 16.sp
+    ),
+    bodyMedium = TextStyle(
+        fontFamily = robotoFontFamily,
+        fontWeight = FontWeight.Light,
+        fontSize = 14.sp
+    ),
+    bodySmall = TextStyle(
+        fontFamily = robotoFontFamily,
         fontWeight = FontWeight.Normal,
-        fontSize = 22.sp,
-        lineHeight = 28.sp,
-        letterSpacing = 0.sp
+        fontSize = 12.sp
+    ),
+    labelLarge = TextStyle(
+        fontFamily = robotoFontFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 14.sp
+    ),
+    labelMedium = TextStyle(
+        fontFamily = robotoFontFamily,
+        fontWeight = FontWeight.Medium,
+        fontSize = 12.sp
     ),
     labelSmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium,
-        fontSize = 11.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
+        fontFamily = robotoFontFamily,
+        fontWeight = FontWeight.Light,
+        fontSize = 10.sp
     )
-    */
 )

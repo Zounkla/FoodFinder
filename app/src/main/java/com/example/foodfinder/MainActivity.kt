@@ -12,11 +12,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -33,8 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.foodfinder.ui.component.PermissionDialog
-import com.example.foodfinder.ui.component.RestaurantItem
+import com.example.foodfinder.ui.component.LocationPermissionDialog
+import com.example.foodfinder.ui.component.RestaurantList
 import com.example.foodfinder.ui.component.SearchBar
 import com.example.foodfinder.ui.theme.FoodFinderTheme
 import com.example.foodfinder.ui.viewmodel.LocationViewModel
@@ -58,6 +54,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         enableEdgeToEdge()
+
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 super.onLocationResult(locationResult)
@@ -89,11 +86,11 @@ class MainActivity : ComponentActivity() {
 
                     }
                 }
-            }
-            Scaffold(
-                modifier = Modifier.fillMaxSize(),
-            ) { innerPadding ->
-                SearchBar(innerPadding)
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                ) { innerPadding ->
+                    SearchBar(innerPadding)
+                }
             }
         }
     }
@@ -140,11 +137,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.padding(16.dp)
                 )
             } else {
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    items(viewModel.restaurants.value) { restaurant ->
-                        RestaurantItem(restaurant, location)
-                    }
-                }
+                RestaurantList(viewModel.restaurants.value, location)
             }
 
 
@@ -200,26 +193,6 @@ class MainActivity : ComponentActivity() {
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, mainLooper)
-        }
-    }
-
-
-    @Composable
-    fun LocationPermissionDialog(
-        showDialog: Boolean,
-        onDismiss: () -> Unit,
-        onConfirm: () -> Unit
-    ) {
-        if (showDialog) {
-            PermissionDialog(
-                onDismissRequest = onDismiss,
-                onConfirmation = onConfirm,
-                dialogTitle = "Permission requise",
-                dialogText = "L'application requiert l'accès au GPS pour trouver la marketplace la plus proche",
-                dismissButtonText = "J'ai compris",
-                confirmButtonText = "Accèder aux réglages",
-                icon = Icons.Filled.Place
-            )
         }
     }
 }
