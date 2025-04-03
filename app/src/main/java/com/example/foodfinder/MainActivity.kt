@@ -52,6 +52,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         enableEdgeToEdge()
 
@@ -137,7 +139,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.padding(16.dp)
                 )
             } else {
-                RestaurantList(viewModel.restaurants.value, location)
+                RestaurantList(viewModel.restaurants.value, location, viewModel)
             }
 
 

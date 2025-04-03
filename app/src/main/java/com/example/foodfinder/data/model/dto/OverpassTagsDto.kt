@@ -1,6 +1,6 @@
 package com.example.foodfinder.data.model.dto
 
-data class TagDto(
+data class OverpassTagsDto(
     val addr_city: String?,
     val addr_country: String?,
     val addr_housenumber: String?,

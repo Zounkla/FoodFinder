@@ -4,6 +4,7 @@ import android.location.Location
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,10 +25,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
-import com.example.foodfinder.data.model.entity.Restaurant
+import com.example.foodfinder.data.model.dto.DisplayedRestaurant
 
 @Composable
-fun RestaurantItem(restaurant: Restaurant, location: Location?) {
+fun RestaurantItem(displayedRestaurant: DisplayedRestaurant,
+                   location: Location?,
+                   onClick: (DisplayedRestaurant) -> Unit,
+                   isVisited: Boolean) {
     val alpha by animateFloatAsState(
         targetValue = 1f,
         animationSpec = tween(durationMillis = 700),
@@ -40,15 +44,29 @@ fun RestaurantItem(restaurant: Restaurant, location: Location?) {
         label = "Elevation"
     )
 
+    val backgroundColor = if (isVisited) {
+        MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+    } else {
+        MaterialTheme.colorScheme.surface
+    }
+
+    val textColor = if (isVisited) {
+        MaterialTheme.colorScheme.secondary
+    } else {
+        MaterialTheme.colorScheme.onSurface
+    }
+
+
     Card(
         modifier = Modifier
             .padding(12.dp)
             .fillMaxWidth()
-            .animateContentSize(),
+            .animateContentSize()
+            .clickable { onClick(displayedRestaurant) },
         elevation = CardDefaults.cardElevation(cardElevation.value.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface
+            containerColor = backgroundColor,
+            contentColor = textColor
         ),
         shape = RoundedCornerShape(16.dp)
     ) {
@@ -75,7 +93,7 @@ fun RestaurantItem(restaurant: Restaurant, location: Location?) {
             ) {
                 // Nom du restaurant
                 Text(
-                    text = restaurant.name,
+                    text = displayedRestaurant.name,
                     style = MaterialTheme.typography.headlineSmall,
                     color = MaterialTheme.colorScheme.onSurface
                 )
