@@ -1,0 +1,91 @@
+
+
+- rechercher tous les restaurants à proximité de moi
+- pouvoir en mettre un comme "visité"
+- rechercher tous les restaurants (ordonnés par distance) par nom de ville
+- rechercher tous les restaurants (ordonnés par distance) par nom de restaurant, si ce mode est choisi on peut chosir la catégorie du restaurant (restaurant ou fast food, par exemple)
+- en cliquant sur un des restaurants affichés, on peut avoir son détail et sur le détail y'a entre autre un lien pour ouvrir un trajet google maps prérempli
+- une autre page pour lister tous les restaurants visités, sur cette page on pourra proposer des filtres (par ville, nom ou catégorie notamment)
+- une autre page de statistiques (par exemple on trouvera "50% des restaurnats sur Rouen visités")
+
+🧭 Navigation principale (Bottom Navigation Bar)
+Affiche toujours ces 3-4 onglets :
+
+Accueil (📍) – recherche de restaurants à proximité.
+
+Recherche (🔍) – recherche avancée (ville, nom, catégorie).
+
+Visités (✅) – liste des restaurants visités + filtres.
+
+Stats (📊) – page de statistiques.
+
+🏠 Accueil (recherche autour de moi)
+Carte + Liste switch possible :
+
+Carte pour affichage visuel
+
+Liste avec les restaurants classés par distance croissante
+
+Chaque RestaurantItem :
+
+Nom + distance + catégorie
+
+Bouton “Visité ✅” ou “Marquer comme visité”
+
+Affichage visuel si déjà visité (ex : fond légèrement vert ou icône check)
+
+Animation douce au clic
+
+🔍 Recherche
+Tu pourrais avoir 2 onglets ou un toggle :
+
+1. Par Ville :
+Champ texte pour ville
+
+Liste de restaurants ordonnée par distance (à vol d’oiseau si pas de géoloc dispo)
+
+2. Par Nom + Catégorie :
+Champ texte pour nom de resto
+
+Dropdown pour catégorie : "Restaurant", "Fast food", "Autre", etc.
+
+Résultats dynamiques et classés par distance
+
+🧾 Détail du restaurant
+Nom, adresse, distance, catégorie
+
+Bouton "Marquer comme visité" (ou “Retirer des visités” si déjà visité)
+
+Bouton “Itinéraire Google Maps”
+
+Icône 📍 + texte “Y aller”
+
+Ouvre Google Maps avec trajet prérempli
+
+✅ Restaurants visités
+Affichage en liste ou carte (optionnel)
+
+Filtres en haut :
+
+Nom (champ texte)
+
+Ville (dropdown ou autocomplete)
+
+Catégorie (checkbox ou dropdown)
+
+Icône 🗑️ ou swipe pour retirer un resto visité
+
+📊 Statistiques
+Quelques idées :
+
+% de restaurants visités par ville
+
+“Tu as visité 12 sur 34 restaurants à Rouen (35%)”
+
+Graphique donut ou bar chart
+
+Nombre total de restos visités
+
+Catégories les plus visitées (avec couleurs)
+
+
