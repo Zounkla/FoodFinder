@@ -22,7 +22,8 @@ fun RestaurantList(displayedRestaurants: List<DisplayedRestaurant>,
         items(displayedRestaurants) { restaurant ->
             val isVisited = visitedRestaurants.any { it.id == restaurant.id }
             RestaurantItem(restaurant, location,
-                onClick = { viewModel.click(restaurant)},
+                onClick = {println(restaurant)},
+                onCheckboxChange = { viewModel.click(restaurant)},
                 isVisited)
         }
     }

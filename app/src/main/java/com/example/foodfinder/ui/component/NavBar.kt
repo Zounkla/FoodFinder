@@ -14,7 +14,7 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
 import com.example.foodfinder.ui.theme.LightGray
 import com.example.foodfinder.ui.theme.MidnightBlue
 import com.example.foodfinder.ui.theme.SoftGold
@@ -71,7 +71,7 @@ fun NavBar(
         NavigationBarItem(
             icon = {
                 Image(
-                    painter = rememberImagePainter("android.resource://com.example.foodfinder/drawable/equalizer"),
+                    painter = rememberAsyncImagePainter("android.resource://com.example.foodfinder/drawable/equalizer"),
                     contentDescription = "Statistiques",
                     modifier = Modifier.size(32.dp)
                 )
