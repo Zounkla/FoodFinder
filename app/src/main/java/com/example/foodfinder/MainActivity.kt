@@ -7,34 +7,18 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.foodfinder.ui.component.LocationPermissionDialog
-import com.example.foodfinder.ui.component.RestaurantList
-import com.example.foodfinder.ui.component.SearchBar
+import com.example.foodfinder.ui.component.GeolocationPage
+import com.example.foodfinder.ui.component.NavBar
+import com.example.foodfinder.ui.component.SearchPage
 import com.example.foodfinder.ui.theme.FoodFinderTheme
 import com.example.foodfinder.ui.viewmodel.LocationViewModel
-import com.example.foodfinder.ui.viewmodel.RestaurantViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -68,6 +52,7 @@ class MainActivity : ComponentActivity() {
         }
         setContent {
             FoodFinderTheme {
+                val selectedItem = remember { mutableIntStateOf(0) }
                 when {
                     ContextCompat.checkSelfPermission(
                         applicationContext,
@@ -90,69 +75,35 @@ class MainActivity : ComponentActivity() {
                 }
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
+                    bottomBar = {
+                        NavBar(
+                            selectedItem = selectedItem.intValue,
+                            onItemSelected = { index ->
+                                selectedItem.intValue = index
+                            }
+                        )
+                    }
                 ) { innerPadding ->
-                    SearchBar(innerPadding)
+                    when (selectedItem.intValue) {
+                        0 -> {
+                            SearchPage(innerPadding, locationViewModel)
+                        }
+                        1 -> {
+                            GeolocationPage(innerPadding, locationViewModel)
+                        }
+                        2 -> {
+                            // TODO VISITED PAGE
+                        }
+                        else -> {
+                            // TODO STATS PAGE
+                        }
+                    }
                 }
             }
         }
     }
 
 
-    @Composable
-    fun SearchBar(innerPadding: PaddingValues, viewModel: RestaurantViewModel = viewModel()) {
-        var searchText by rememberSaveable { mutableStateOf("") }
-        val context = LocalContext.current
-        val location = locationViewModel.location.collectAsState().value
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-        ) {
-            SearchBar(
-                searchText = searchText,
-                onSearchTextChanged = { searchText = it },
-                onLocationClick = {
-                    viewModel.checkLocationPermission(context)
-                    if (location != null) {
-                        viewModel.fetchRestaurants(location.latitude, location.longitude)
-                    } else {
-                        viewModel.showLocationErrorDialog.value = true
-                    }
-                },
-                onSearchClick = {
-                    println(searchText)
-                },
-                modifier = Modifier.fillMaxWidth(),
-                keyboardActions = KeyboardActions(
-                    onSearch = {
-                        println(searchText)
-                    }
-                )
-            )
-
-            if (viewModel.isLoading.value) {
-                CircularProgressIndicator(modifier = Modifier.padding(16.dp))
-            } else if (viewModel.errorMessage.value != null) {
-                Text(
-                    text = "Error: ${viewModel.errorMessage.value}",
-                    color = Color.Red,
-                    modifier = Modifier.padding(16.dp)
-                )
-            } else {
-                RestaurantList(viewModel.restaurants.value, location, viewModel)
-            }
-
-
-            if (viewModel.showLocationErrorDialog.value) {
-                LocationPermissionDialog(
-                    showDialog = viewModel.showLocationErrorDialog.value,
-                    onDismiss = { viewModel.showLocationErrorDialog.value = false },
-                    onConfirm = {
-                    }
-                )
-            }
-        }
-    }
 
     override fun onResume() {
         super.onResume()

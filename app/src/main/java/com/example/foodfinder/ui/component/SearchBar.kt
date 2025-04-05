@@ -6,7 +6,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Place
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -25,7 +24,6 @@ import androidx.compose.ui.unit.dp
 fun SearchBar(
     searchText: String,
     onSearchTextChanged: (String) -> Unit,
-    onLocationClick: () -> Unit,
     onSearchClick: () -> Unit,
     modifier: Modifier = Modifier,
     keyboardActions: KeyboardActions
@@ -39,15 +37,6 @@ fun SearchBar(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .clip(RoundedCornerShape(16.dp)),
-        leadingIcon = {
-            IconButton(onClick = onLocationClick) {
-                Icon(
-                    imageVector = Icons.Outlined.Place,
-                    contentDescription = "Location Icon",
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
-        },
         trailingIcon = {
             IconButton(onClick = {
                 focusManager.clearFocus()
