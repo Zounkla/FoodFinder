@@ -12,6 +12,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
@@ -33,7 +34,9 @@ fun NavBar(
             icon = {
                 Icon(imageVector = Icons.Filled.Search,
                     contentDescription = "Recherche",
-                    modifier = Modifier.size(32.dp))
+                    modifier = Modifier.size(32.dp)
+                        .align(Alignment.CenterVertically)
+                )
             },
             selected = selectedItem == 0,
             onClick = { onItemSelected(0) },
@@ -46,7 +49,9 @@ fun NavBar(
             icon = {
                 Icon(imageVector = Icons.Filled.LocationOn,
                     contentDescription = "Géolocalisation",
-                    modifier = Modifier.size(32.dp))
+                    modifier = Modifier.size(32.dp)
+                        .align(Alignment.CenterVertically)
+                )
             },
             selected = selectedItem == 1,
             onClick = { onItemSelected(1) },
@@ -59,7 +64,9 @@ fun NavBar(
             icon = {
                 Icon(imageVector = Icons.Filled.CheckCircle,
                     contentDescription = "Restaurants visités",
-                    modifier = Modifier.size(32.dp))
+                    modifier = Modifier.size(32.dp)
+                        .align(Alignment.CenterVertically)
+                )
             },
             selected = selectedItem == 2,
             onClick = { onItemSelected(2) },
@@ -74,6 +81,7 @@ fun NavBar(
                     painter = rememberAsyncImagePainter("android.resource://com.example.foodfinder/drawable/equalizer"),
                     contentDescription = "Statistiques",
                     modifier = Modifier.size(32.dp)
+                        .align(Alignment.CenterVertically)
                 )
             },
             selected = selectedItem == 3,
