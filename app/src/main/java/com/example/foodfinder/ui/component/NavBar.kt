@@ -28,7 +28,6 @@ fun NavBar(
     NavigationBar(
         containerColor = MidnightBlue,
         contentColor = SoftGold,
-        modifier = Modifier.height(80.dp)
     ) {
         NavigationBarItem(
             icon = {

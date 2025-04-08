@@ -104,6 +104,7 @@ fun RestaurantItem(displayedRestaurant: DisplayedRestaurant,
             }
             Box(
                 modifier = Modifier
+                    .padding(end = 16.dp)
                     .size(20.dp)
                     .border(
                         BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
@@ -115,9 +116,7 @@ fun RestaurantItem(displayedRestaurant: DisplayedRestaurant,
                     onCheckedChange = {
                         onCheckboxChange(displayedRestaurant)
                     },
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .matchParentSize()
+                    modifier = Modifier.matchParentSize()
                 )
             }
         }
