@@ -1,5 +1,6 @@
 package com.example.foodfinder.data.source.remote
 
+import android.location.Location
 import com.example.foodfinder.data.model.dto.OverpassResponseDto
 import com.example.foodfinder.domain.service.OverpassApiService
 import kotlinx.coroutines.Dispatchers
@@ -9,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class RestaurantApiService {
 
-    suspend fun getRestaurants(latitude: Double, longitude: Double): OverpassResponseDto? {
+    suspend fun getRestaurants(location: Location): OverpassResponseDto? {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://overpass-api.de/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -18,7 +19,7 @@ class RestaurantApiService {
         val service = retrofit.create(OverpassApiService::class.java)
         val query = """
             [out:json];
-            node["amenity"="restaurant"](around:500,$latitude,$longitude);
+            node["amenity"="restaurant"](around:500,${location.latitude},${location.longitude});
             out body;
             >;
             out skel qt;

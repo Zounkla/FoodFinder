@@ -4,7 +4,7 @@ data class DisplayedRestaurant(
     val id: Long,
     val name: String,
     val category: String,
-    val address: DisplayedAdress
-
+    val address: DisplayedAdress,
+    val distance: Double
 ) {
 }

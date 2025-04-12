@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
+import android.location.Location
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
@@ -46,7 +47,7 @@ class RestaurantViewModel(application: Application) : AndroidViewModel(applicati
         ) == PackageManager.PERMISSION_GRANTED
     }
 
-    fun fetchRestaurants(latitude: Double, longitude: Double) {
+    fun fetchRestaurants(location: Location) {
         if (!isPermissionGranted.value) {
             showLocationErrorDialog.value = true
             return
@@ -55,7 +56,7 @@ class RestaurantViewModel(application: Application) : AndroidViewModel(applicati
         isLoading.value = true
         viewModelScope.launch {
             try {
-                restaurants.value = RestaurantService.getRestaurantsByLocation(latitude, longitude)
+                restaurants.value = RestaurantService.getRestaurantsByLocation(location)
             } catch (e: Exception) {
                 errorMessage.value = "Failed to fetch data: ${e.message}"
             } finally {

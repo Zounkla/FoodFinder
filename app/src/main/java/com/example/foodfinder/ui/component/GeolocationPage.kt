@@ -30,7 +30,7 @@ fun GeolocationPage(innerPadding: PaddingValues, locationViewModel: LocationView
     viewModel.checkLocationPermission(context)
     LaunchedEffect(Unit) {
         if (location != null && !hasFetchedRestaurants.value) {
-            viewModel.fetchRestaurants(location.latitude, location.longitude)
+            viewModel.fetchRestaurants(location)
             hasFetchedRestaurants.value = true
         } else {
             viewModel.showLocationErrorDialog.value = true

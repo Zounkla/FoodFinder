@@ -100,6 +100,12 @@ fun RestaurantItem(displayedRestaurant: DisplayedRestaurant,
                         color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.bodyLarge
                     )
+                } else {
+                    Text(
+                        text = displayedRestaurant.distance.toString() + " km",
+                        color = MaterialTheme.colorScheme.onSurface,
+                        style = MaterialTheme.typography.bodyLarge
+                    )
                 }
             }
             Box(

@@ -5,7 +5,7 @@ data class DisplayedAdress(val city: String,
                            val houseNumber: String,
                            val postCode: String,
                            val street: String,
-                           val long: String,
+                           val lon: String,
                            val lat: String)
 {
 }
